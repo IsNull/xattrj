@@ -1,0 +1,13 @@
+
+.DS_Store
+
+*.class
+# Package Files #
+*.war
+*.ear
+.apt_*
+/bin/
+/cache/
+/target/
+/data/
+*.log
