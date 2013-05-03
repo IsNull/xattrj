@@ -5,6 +5,8 @@ import java.io.File;
 import org.securityvision.util.LibraryLoader;
 
 /**
+ * Xattrj
+ * Provides Native extended attribute access for Java!
  * 
  * @author IsNull
  *
@@ -56,10 +58,13 @@ public class Xattrj {
 
 	static {
 		try {
+			System.out.println("loading xattrj...");
 			LibraryLoader.loadLibrary("xattrj");
+
+			//System.load("/Users/IsNull/Downloads/libxattrj.dylib");
+			System.out.println("loaded!");
 		} catch (Exception e) {
-			System.err.println(e);
-			System.exit(1);
+			e.printStackTrace();
 		}
 	}
 }

@@ -1,6 +1,12 @@
+#
+# Makefile
+#
+# Compiles the 
+# 
+
 CC=gcc
-CFLAGS= -dynamiclib -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers
-LDFLAGS=-fPIC -shared
+CFLAGS= -fPIC -dynamiclib -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers
+LDFLAGS= -fPIC -shared
 
 SOURCES_DIR=src/main/c++
 OBJECTS_DIR=target/c++
@@ -16,7 +22,8 @@ $(EXECUTABLE): $(OBJECTS)
 
 $(OBJECTS): $(SOURCES)
 	mkdir -p $(OBJECTS_DIR)
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@ -framework JavaVM
+	
 
 clean:
 	rm -rf $(OBJECTS_DIR) $(EXECUTABLE)

@@ -25,7 +25,6 @@ public class LibraryLoader {
 	public static void loadLibrary(String name) throws IOException {
 		try {
 			System.out.println("System.loadLibrary " + name);
-
 			System.loadLibrary(name);
 		} catch (UnsatisfiedLinkError e) {
 			System.err.println("UnsatisfiedLinkError: " + e.getMessage());
@@ -36,7 +35,7 @@ public class LibraryLoader {
 			{
 				int pos = filename.lastIndexOf('.');
 				File file = File.createTempFile(filename.substring(0, pos), filename.substring(pos));
-				file.deleteOnExit();
+				//file.deleteOnExit();
 				OutputStream out = null;
 				try {
 					byte[] buf = new byte[4096];
@@ -54,8 +53,20 @@ public class LibraryLoader {
 					if(out != null) out.close();
 					if(in != null) in.close();
 				}
-				System.load(file.getAbsolutePath());
-				System.out.println("Loaded " + file.getAbsolutePath());
+
+				if(file.exists())
+				{
+					System.out.println("loading existing ... " + file.getAbsolutePath());
+					try{
+						System.load(file.getAbsolutePath());
+						System.out.println("Loaded successful" + file.getName());
+					}catch(Exception ex){
+						System.err.println("System.load FAILED:");
+						ex.printStackTrace();
+					}
+				}else
+					System.err.println("cant find JNI Lib: " + file.getAbsolutePath());
+
 			}else{
 				System.err.println("LibraryLoader.class.getClassLoader().getResourceAsStream: RES Not found: " + filename);
 			}

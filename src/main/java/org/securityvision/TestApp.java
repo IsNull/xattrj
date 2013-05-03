@@ -1,16 +1,20 @@
-package org.securityvision.xattrj;
+package org.securityvision;
 
 import java.io.File;
 
 import org.securityvision.xattrj.Xattrj;
 
 /**
- * Hello world!
+ * Xattrj test!
  *
  */
-public class Test {
+public class TestApp {
 
 	public static void main(String[] args) {
+		new TestApp().test();
+	}
+
+	public void test(){
 		System.out.println("Java: Hello World!");
 		Xattrj xattrj = new Xattrj();
 
@@ -23,6 +27,5 @@ public class Test {
 
 		String value = xattrj.readAttribute(file, "native.test");
 		System.out.println("val: "+value);
-
 	}
 }
