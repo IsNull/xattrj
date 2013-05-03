@@ -2,10 +2,11 @@
 # Makefile
 #
 # Compiles the 
+# -dynamiclib
 # 
 
 CC=gcc
-CFLAGS= -fPIC -dynamiclib -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers
+CFLAGS= -Wall -fPIC -shared -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers
 LDFLAGS= -fPIC -shared
 
 SOURCES_DIR=src/main/c++
