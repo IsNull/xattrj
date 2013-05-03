@@ -60,8 +60,6 @@ public class Xattrj {
 		try {
 			System.out.println("loading xattrj...");
 			LibraryLoader.loadLibrary("xattrj");
-
-			//System.load("/Users/IsNull/Downloads/libxattrj.dylib");
 			System.out.println("loaded!");
 		} catch (Exception e) {
 			e.printStackTrace();
