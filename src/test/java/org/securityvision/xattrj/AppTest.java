@@ -1,5 +1,8 @@
 package org.securityvision.xattrj;
 
+import java.io.File;
+import java.io.IOException;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -31,8 +34,69 @@ extends TestCase
 	/**
 	 * Rigourous Test :-)
 	 */
-	public void testApp()
+	public void testStringAttribute()
 	{
-		assertTrue( true );
+		//assertTrue( true );
+		String attNameString = "junit.test";
+		String value1 = "abcdefghijklmnopqrstuvwxyz";
+
+		Xattrj xattrj = new Xattrj();
+		File file;
+		try {
+			file = File.createTempFile("xattrTest", "junit");
+			file.deleteOnExit();
+
+			// Test case 1
+			xattrj.writeAttribute(file, attNameString, value1);
+			String readed = xattrj.readAttribute(file, attNameString);
+			System.out.println("readed: '" + readed + "'");
+			assertTrue("readed: '" + readed + "' but expteded: '" + value1 + "'", value1.equals(readed));
+
+		} catch (IOException e) {
+			assertTrue(e.getMessage(), false);
+			e.printStackTrace();
+		}
+	}
+
+	public void testLargeStringAttribute()
+	{
+		//assertTrue( true );
+		String attNameString = "junit.test";
+		String value2 = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+
+		Xattrj xattrj = new Xattrj();
+		File file;
+		try {
+			file = File.createTempFile("xattrTest", "junit");
+			file.deleteOnExit();
+
+			xattrj.writeAttribute(file, attNameString, value2);
+			String readed = xattrj.readAttribute(file, attNameString);
+			System.out.println("readed: '" + readed + "'");
+			assertTrue("readed: '" + readed + "' but expteded: '" + value2 + "'", value2.equals(readed));
+
+		} catch (IOException e) {
+			assertTrue(e.getMessage(), false);
+			e.printStackTrace();
+		}
+	}
+
+	public void testMissingAttribute()
+	{
+		String attNameString = "junit.IdoNotExist";
+
+		Xattrj xattrj = new Xattrj();
+		File file;
+		try {
+			file = File.createTempFile("xattrTest", "junit");
+			file.deleteOnExit();
+
+			String readed = xattrj.readAttribute(file, attNameString);
+			System.out.println("readed: '" + readed + "'");
+			assertTrue("readed: '" + readed + "' but expteded: '" + null + "'", readed == null);
+		} catch (IOException e) {
+			assertTrue(e.getMessage(), false);
+			e.printStackTrace();
+		}
 	}
 }
