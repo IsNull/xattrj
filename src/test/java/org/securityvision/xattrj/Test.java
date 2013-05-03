@@ -2,11 +2,13 @@ package org.securityvision.xattrj;
 
 import java.io.File;
 
+import org.securityvision.xattrj.Xattrj;
+
 /**
  * Hello world!
  *
  */
-public class App {
+public class Test {
 
 	public static void main(String[] args) {
 		System.out.println("Java: Hello World!");

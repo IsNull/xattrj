@@ -2,6 +2,13 @@ package org.securityvision.xattrj;
 
 import java.io.File;
 
+import org.securityvision.util.LibraryLoader;
+
+/**
+ * 
+ * @author IsNull
+ *
+ */
 public class Xattrj {
 
 	/**
