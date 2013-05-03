@@ -55,7 +55,7 @@
 			char *buffer = (char*)malloc(bufferLength);
 
 			// now actually get the attribute string
-			int s = getxattr(filePath, attrName, buffer, 255, 0, 0);
+			int s = getxattr(filePath, attrName, buffer, bufferLength, 0, 0);
 
 			if(s > 0){
 				// convert the buffer to a null terminated string
