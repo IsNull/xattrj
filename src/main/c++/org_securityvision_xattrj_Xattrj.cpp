@@ -9,6 +9,7 @@
 	/**
 	 * writeAttribute
 	 * writes the extended attribute
+	 *
 	 */
 	JNIEXPORT void JNICALL Java_org_securityvision_xattrj_Xattrj_writeAttribute
 		(JNIEnv *env, jobject jobj, jstring jfilePath, jstring jattrName, jstring jattrValue){
@@ -31,10 +32,17 @@
 
 	/**
 	 * readAttribute
-	 * Reads the extended attribute
+	 * Reads the extended attribute as string
+	 *
+	 * If the attribute does not exist (or any other error occurs)
+	 * a null string is returned.
+	 *
+	 *
 	 */
 	JNIEXPORT jstring JNICALL Java_org_securityvision_xattrj_Xattrj_readAttribute
 		(JNIEnv *env, jobject jobj, jstring jfilePath, jstring jattrName){
+
+		jstring jvalue = NULL;
 
 		const char *filePath= env->GetStringUTFChars(jfilePath, 0);
 		const char *attrName= env->GetStringUTFChars(jattrName, 0);
@@ -42,19 +50,25 @@
 		// get size of needed buffer
 		int bufferLength = getxattr(filePath, attrName, NULL, 0, 0, 0);
 
-		// make a buffer of sufficient length
-		char *buffer = (char *)malloc(bufferLength);
+		if(bufferLength > 0){
+			// make a buffer of sufficient length
+			char *buffer = (char*)malloc(bufferLength);
 
-		// now actually get the attribute string
-		getxattr(filePath, attrName, buffer, 255, 0, 0);
+			// now actually get the attribute string
+			int s = getxattr(filePath, attrName, buffer, 255, 0, 0);
 
-		//printf("%s\n", buffer);
+			if(s > 0){
+				// convert the buffer to a null terminated string
+				char *value = (char*)malloc(s+1);
+				*(char*)value = 0;
+				strncat(value, buffer, s);
+				free(buffer);
 
-		jstring attrValue = env->NewStringUTF(buffer);
-		// release buffer
-		free(buffer);
-
-		return attrValue;
+				// convert the c-String to a java string
+				jvalue = env->NewStringUTF(value);
+			}
+		}
+		return jvalue;
 	}
 
 
