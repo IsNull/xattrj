@@ -15,6 +15,22 @@ extern "C" {
 JNIEXPORT void JNICALL Java_org_securityvision_xattrj_Xattrj_hello
   (JNIEnv *, jobject);
 
+/*
+ * Class:     org_securityvision_xattrj_Xattrj
+ * Method:    writeAttribute
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_securityvision_xattrj_Xattrj_writeAttribute
+  (JNIEnv *, jobject, jstring, jstring, jstring);
+
+/*
+ * Class:     org_securityvision_xattrj_Xattrj
+ * Method:    readAttribute
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_securityvision_xattrj_Xattrj_readAttribute
+  (JNIEnv *, jobject, jstring, jstring);
+
 #ifdef __cplusplus
 }
 #endif
