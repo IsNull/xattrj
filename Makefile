@@ -3,11 +3,12 @@
 #
 # Compiles the 
 # -dynamiclib
-# 
+# -Wally
 
 CC=gcc
-CFLAGS= -Wall -fPIC -shared -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers
-LDFLAGS= -fPIC -shared
+LDFLAGS= -fPIC -bundle
+CFLAGS= -c -shared -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -m64
+
 
 SOURCES_DIR=src/main/c++
 OBJECTS_DIR=target/c++
@@ -23,7 +24,8 @@ $(EXECUTABLE): $(OBJECTS)
 
 $(OBJECTS): $(SOURCES)
 	mkdir -p $(OBJECTS_DIR)
-	$(CC) $(CFLAGS) $< -o $@ -framework JavaVM
+	$(CC) $(CFLAGS) $< -o $@
+	
 	
 
 clean:
