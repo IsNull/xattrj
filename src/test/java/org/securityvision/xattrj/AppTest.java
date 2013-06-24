@@ -40,7 +40,8 @@ extends TestCase
 		String attNameString = "junit.test";
 		String value1 = "abcdefghijklmnopqrstuvwxyz";
 
-		Xattrj xattrj = new Xattrj();
+		Xattrj xattrj = getXattrj();
+		assertNotNull(xattrj);
 		File file;
 		try {
 			file = File.createTempFile("xattrTest", "junit");
@@ -64,7 +65,8 @@ extends TestCase
 		String attNameString = "junit.test";
 		String value2 = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
 
-		Xattrj xattrj = new Xattrj();
+		Xattrj xattrj = getXattrj();
+		assertNotNull(xattrj);
 		File file;
 		try {
 			file = File.createTempFile("xattrTest", "junit");
@@ -85,11 +87,13 @@ extends TestCase
 	{
 		String attNameString = "junit.IdoNotExist";
 
-		Xattrj xattrj = new Xattrj();
 		File file;
 		try {
 			file = File.createTempFile("xattrTest", "junit");
 			file.deleteOnExit();
+
+			Xattrj xattrj = getXattrj();
+			assertNotNull(xattrj);
 
 			String readed = xattrj.readAttribute(file, attNameString);
 			System.out.println("readed: '" + readed + "'");
@@ -98,5 +102,16 @@ extends TestCase
 			assertTrue(e.getMessage(), false);
 			e.printStackTrace();
 		}
+	}
+
+	private Xattrj getXattrj(){
+		try {
+			return new Xattrj();
+		} catch (UnsatisfiedLinkError e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
