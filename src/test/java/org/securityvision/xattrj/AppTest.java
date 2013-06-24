@@ -3,6 +3,7 @@ package org.securityvision.xattrj;
 import java.io.File;
 import java.io.IOException;
 
+import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -36,7 +37,12 @@ extends TestCase
 	 */
 	public void testStringAttribute()
 	{
-		//assertTrue( true );
+		if(isWindows()){
+			Assert.assertTrue(true);
+			return;
+		}
+		
+		
 		String attNameString = "junit.test";
 		String value1 = "abcdefghijklmnopqrstuvwxyz";
 
@@ -61,7 +67,11 @@ extends TestCase
 
 	public void testLargeStringAttribute()
 	{
-		//assertTrue( true );
+		if(isWindows()){
+			Assert.assertTrue(true);
+			return;
+		}
+		
 		String attNameString = "junit.test";
 		String value2 = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
 
@@ -85,6 +95,11 @@ extends TestCase
 
 	public void testMissingAttribute()
 	{
+		if(isWindows()){
+			Assert.assertTrue(true);
+			return;
+		}
+		
 		String attNameString = "junit.IdoNotExist";
 
 		File file;
@@ -104,6 +119,7 @@ extends TestCase
 		}
 	}
 
+
 	private Xattrj getXattrj(){
 		try {
 			return new Xattrj();
@@ -113,5 +129,17 @@ extends TestCase
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	
+	/**
+	 * Is the current OS a windows?
+	 * @return
+	 */
+	private static boolean isWindows() {
+
+		String os = System.getProperty("os.name").toLowerCase();
+		// windows
+		return (os.indexOf("win") >= 0);
 	}
 }
