@@ -21,13 +21,16 @@ public class LibraryLoader {
 	 * @param name name of the library to load
 	 * @throws IOException if the library cannot be extracted from a jar file
 	 * into a temporary file
+	 * @throws UnsatisfiedLinkError if the library has been extracted from the jar but could not be loaded.
 	 */
-	public static void loadLibrary(String name) throws IOException {
+	public static void loadLibrary(String name) throws IOException,UnsatisfiedLinkError {
 		try {
 			System.out.println("System.loadLibrary " + name);
 			System.loadLibrary(name);
 		} catch (UnsatisfiedLinkError e) {
 			System.err.println("UnsatisfiedLinkError: " + e.getMessage());
+			System.err.println("--> Trying to extract lib form jar...");
+
 			String filename = System.mapLibraryName(name);
 			InputStream in = LibraryLoader.class.getClassLoader().getResourceAsStream(filename);
 
@@ -60,16 +63,14 @@ public class LibraryLoader {
 					try{
 						System.load(file.getAbsolutePath());
 						System.out.println("Loaded successful" + file.getName());
-					}catch(Exception ex){
-						System.err.println("System.load FAILED:");
-						ex.printStackTrace();
+					}catch(UnsatisfiedLinkError ex){
+						throw ex;
 					}
 				}else
-					System.err.println("cant find JNI Lib: " + file.getAbsolutePath());
+					throw new IOException("cant find JNI Lib: " + file.getAbsolutePath());
 
-			}else{
-				System.err.println("LibraryLoader.class.getClassLoader().getResourceAsStream: RES Not found: " + filename);
-			}
+			}else
+				throw new IOException("Classloader - Can't load Resource: " + filename);
 		}
 	}
 }
