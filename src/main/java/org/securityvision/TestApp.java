@@ -1,6 +1,7 @@
 package org.securityvision;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.securityvision.xattrj.Xattrj;
 
@@ -16,16 +17,26 @@ public class TestApp {
 
 	public void test(){
 		System.out.println("Java: Hello World!");
-		Xattrj xattrj = new Xattrj();
+		Xattrj xattrj;
+		try {
+			xattrj = new Xattrj();
 
-		System.out.println("calling jni: xattrj.hello()");
-		xattrj.hello();
+			System.out.println("calling jni: xattrj.hello()");
+			xattrj.hello();
 
-		File file = new File("/Users/IsNull/Documents/hello.txt");
-		xattrj.writeAttribute(file, "native.test", "12345");
+			File file = new File("/Users/IsNull/Documents/hello.txt");
+			xattrj.writeAttribute(file, "native.test", "12345");
 
 
-		String value = xattrj.readAttribute(file, "native.test");
-		System.out.println("val: "+value);
+			String value = xattrj.readAttribute(file, "native.test");
+			System.out.println("val: "+value);
+
+		} catch (UnsatisfiedLinkError e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
 	}
 }
