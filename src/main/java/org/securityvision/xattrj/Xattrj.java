@@ -1,6 +1,7 @@
 package org.securityvision.xattrj;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.securityvision.util.LibraryLoader;
 
@@ -12,6 +13,26 @@ import org.securityvision.util.LibraryLoader;
  *
  */
 public class Xattrj {
+
+	private boolean libLoaded = false;
+
+	public Xattrj() throws UnsatisfiedLinkError, IOException{
+		if(!libLoaded){
+			loadNativeLibrary();
+		}
+	}
+
+	private void loadNativeLibrary() throws UnsatisfiedLinkError, IOException{
+		System.out.println("loading xattrj...");
+		LibraryLoader.loadLibrary("xattrj");
+		libLoaded = true;
+		System.out.println("loaded!");
+	}
+
+
+
+
+
 
 	/**
 	 * JNI Test Method
@@ -56,13 +77,5 @@ public class Xattrj {
 	private native String readAttribute(String file, String attrKey);
 
 
-	static {
-		try {
-			System.out.println("loading xattrj...");
-			LibraryLoader.loadLibrary("xattrj");
-			System.out.println("loaded!");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 }
