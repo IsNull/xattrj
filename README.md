@@ -15,14 +15,18 @@ On Windows and Linux you can access the xattr by using Javas UserDefinedFileAttr
 Maven Dependency
 ----------------
 To use xattrj, you need to compile and install this maven project into your local maven repo:
-mvn clean package install
+
+`mvn clean package install`
+
+Then you can add a dependency to your maven project:
+
 ```
   		<dependency>
 	        <groupId>org.securityvision</groupId>
 	        <artifactId>xattrj</artifactId>
 	        <version>1.0</version>
 	    </dependency>
-```
+``
 
 Hints
 -----
