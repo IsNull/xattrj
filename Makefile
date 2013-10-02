@@ -5,7 +5,7 @@
 # -dynamiclib
 # -Wally
 
-CC=gcc
+CC=g++
 LDFLAGS= -fPIC -bundle
 CFLAGS= -c -shared -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -m64
 
