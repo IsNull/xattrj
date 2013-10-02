@@ -66,6 +66,7 @@
 
 				// convert the c-String to a java string
 				jvalue = env->NewStringUTF(value);
+				free(value);
 			}
 		}
 		return jvalue;
