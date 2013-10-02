@@ -6,11 +6,23 @@ Native xattr wrapper (JNI) which enables Java to access extended file attributes
 
 Scope
 -----
-Currently, only OS X is supported. This is a maven JNI project, the gcc is invoked by a separate makefile.
-To compile, you must run OS X 1.8, and invoke the maven "package" goal.
+Currently, only OS X is guaranteed to be supported (Unix/Linux may work depending on header <sys/xattr.h>). This is a Eclipse maven JNI project, the g++ is invoked by a separate makefile.
+To compile, just invoke the maven "package" goal.
 
-On Windows and Linux you can access the xattr by using Javas UserDefinedFileAttributeView which seems to work nativly too. (UserDefinedFileAttributeView is not supported on HFS+ yet.)
+On Windows and Linux you can access the xattr by using Javas UserDefinedFileAttributeView which seems to work nativly too. (UserDefinedFileAttributeView is not supported on HFS+ with Java 7 or anything before.)
 
+
+Maven Dependency
+----------------
+To use xattrj, you need to compile and install this maven project into your local maven repo:
+mvn clean package install
+```
+  		<dependency>
+	        <groupId>org.securityvision</groupId>
+	        <artifactId>xattrj</artifactId>
+	        <version>1.0</version>
+	    </dependency>
+```
 
 Hints
 -----
