@@ -26,7 +26,7 @@ Then you can add a dependency to your maven project:
 	        <artifactId>xattrj</artifactId>
 	        <version>1.0</version>
 	    </dependency>
-``
+```
 
 Hints
 -----
