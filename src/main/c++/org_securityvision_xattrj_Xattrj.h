@@ -31,6 +31,22 @@ JNIEXPORT void JNICALL Java_org_securityvision_xattrj_Xattrj_writeAttribute
 JNIEXPORT jstring JNICALL Java_org_securityvision_xattrj_Xattrj_readAttribute
   (JNIEnv *, jobject, jstring, jstring);
 
+/*
+ * Class:     org_securityvision_xattrj_Xattrj
+ * Method:    removeAttribute
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_org_securityvision_xattrj_Xattrj_removeAttribute
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     org_securityvision_xattrj_Xattrj
+ * Method:    listAttributes
+ * Signature: (Ljava/lang/String;)[Ljava/lang/String;
+ */
+JNIEXPORT jobjectArray JNICALL Java_org_securityvision_xattrj_Xattrj_listAttributes
+  (JNIEnv *, jobject, jstring);
+
 #ifdef __cplusplus
 }
 #endif

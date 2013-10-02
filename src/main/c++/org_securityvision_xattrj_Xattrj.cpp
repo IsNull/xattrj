@@ -1,10 +1,18 @@
 #include <jni.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <vector>
 #include "org_securityvision_xattrj_Xattrj.h"
 #include <sys/xattr.h>
 
+using namespace std;
+
+	// Private member declarations (since the header is auto generated)
+
+	jstring memJstr(JNIEnv *env, char* buffer, int size);
+
+
+	// IMPLEMENTATION
 
 	/**
 	 * writeAttribute
@@ -58,19 +66,110 @@
 			int s = getxattr(filePath, attrName, buffer, bufferLength, 0, 0);
 
 			if(s > 0){
-				// convert the buffer to a null terminated string
-				char *value = (char*)malloc(s+1);
-				*(char*)value = 0;
-				strncat(value, buffer, s);
-				free(buffer);
-
-				// convert the c-String to a java string
-				jvalue = env->NewStringUTF(value);
-				free(value);
+				// convert the buffer to java string
+				jvalue = memJstr(env, buffer, s);
 			}
+			free(buffer);
 		}
 		return jvalue;
 	}
+
+	/**
+	 * Creates a java string from the given buffer part
+	 */
+	jstring memJstr(JNIEnv *env, char* buffer, int size){
+
+		// convert the buffer to c-string
+		char* value = (char*)malloc(size+1);
+		*(char*)value = 0; // Null term
+		strncat(value, buffer, size);
+
+		// convert c-string to java string
+		jstring jvalue = env->NewStringUTF(value);
+		free(value);
+
+		return jvalue;
+	}
+
+
+	/*
+	 * Remove the given attribute
+	 */
+	JNIEXPORT jboolean JNICALL Java_org_securityvision_xattrj_Xattrj_removeAttribute
+	  (JNIEnv *env, jobject jobj, jstring jfilePath, jstring jattrName){
+
+		const char *filePath= env->GetStringUTFChars(jfilePath, 0);
+		const char *attrName= env->GetStringUTFChars(jattrName, 0);
+
+		//  int removexattr(const char *path, const char *name, int options);
+
+		int ret = removexattr(filePath, attrName, XATTR_NOFOLLOW);
+
+		return (ret == 0) ? JNI_TRUE : JNI_FALSE;
+	}
+
+	/*
+	 * List all attributes
+	 */
+	JNIEXPORT jobjectArray JNICALL Java_org_securityvision_xattrj_Xattrj_listAttributes
+	  (JNIEnv *env, jobject jobj, jstring jfilePath){
+
+		vector<int> attributeNames;
+		char *buffer;
+
+
+		const char *filePath= env->GetStringUTFChars(jfilePath, 0);
+
+		// listxattr(const char *path, char *namebuf, size_t size, int options);
+
+		// get size of needed buffer for names
+		int bufferLength = listxattr(filePath, NULL, 0, XATTR_NOFOLLOW);
+
+		if(bufferLength > 0){
+			// make a buffer of sufficient length to hold all names
+			buffer = (char*)malloc(bufferLength);
+
+			// now actually get the attribute names
+			int s = listxattr(filePath, buffer, bufferLength,  XATTR_NOFOLLOW);
+			if(s >= 0){
+
+				// Buffer contains now all names as utf-8 strings
+				// each terminated by a null byte
+
+				char* p = buffer;
+				char* lp = p;
+
+				for(int i=0; i<s; i++){
+					if(*p == 0){
+						// string end found
+						attributeNames.push_back(p-lp); // save length of string
+						lp = p+sizeof(char); // save pointer to last string end
+					}
+					p++;
+				}
+			}
+		}
+
+		// create the string array and fill it
+		jclass stringClass = env->FindClass( "java/lang/String" );
+		jobjectArray stringArray = env->NewObjectArray( attributeNames.size(), stringClass, 0 );
+
+		char* bp = buffer;
+		for(int i=0; i<attributeNames.size();i++){
+					jstring javaString = memJstr(env, bp, attributeNames[i]);
+					env->SetObjectArrayElement(stringArray, i, javaString);
+
+					// we have to increase the string start pntr
+					bp = bp + attributeNames[i]+sizeof(char); // +1 skip Null byte
+		}
+
+		free(buffer);
+
+		return stringArray;
+	}
+
+
+
 
 
 	/**

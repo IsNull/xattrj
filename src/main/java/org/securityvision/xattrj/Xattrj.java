@@ -7,7 +7,7 @@ import org.securityvision.util.LibraryLoader;
 
 /**
  * Xattrj
- * Provides Native extended attribute access for Java!
+ * Provides native extended attribute access for Java!
  * 
  * @author IsNull
  *
@@ -28,10 +28,6 @@ public class Xattrj {
 		libLoaded = true;
 		System.out.println("loaded!");
 	}
-
-
-
-
 
 
 	/**
@@ -61,6 +57,31 @@ public class Xattrj {
 	}
 
 	/**
+	 * Remove the given meta attribute from the given file
+	 * @param file
+	 * @param attrKey
+	 * @return
+	 */
+	public boolean removeAttribute(File file, String attrKey){
+		return removeAttribute(file.getAbsolutePath(), attrKey);
+	}
+
+	/**
+	 * List all attributes from the given file
+	 * @param file
+	 * @return
+	 */
+	public String[] listAttributes(File file){
+		return listAttributes(file.getAbsolutePath());
+	}
+
+
+
+	//
+	// NATIVE METHOD ENTRY POINTS
+	//
+
+	/**
 	 * Write the extended attribute to the given file
 	 * @param file
 	 * @param attrKey
@@ -76,6 +97,19 @@ public class Xattrj {
 	 */
 	private native String readAttribute(String file, String attrKey);
 
+	/**
+	 * Removes the extended attribute from the given file
+	 * @param file
+	 * @param attrKey
+	 * @return Returns true upon success, false otherwise
+	 */
+	private native boolean removeAttribute(String file, String attrKey);
 
+	/**
+	 * List all available (accessible) Attributes of the given file
+	 * @param file
+	 * @return Returns an array of Attribute Keys which are present in the given file
+	 */
+	private native String[] listAttributes(String file);
 
 }
