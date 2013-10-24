@@ -1,4 +1,3 @@
-#include <jni.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
@@ -35,6 +34,11 @@ using namespace std;
 			printf("native:writeAttribute: error on write...");
 			perror("");
 		}
+
+		env->ReleaseStringUTFChars(jfilePath, filePath);
+		env->ReleaseStringUTFChars(jattrName, attrName);
+		env->ReleaseStringUTFChars(jattrValue, attrValue);
+
 	}
 
 
@@ -71,6 +75,10 @@ using namespace std;
 			}
 			free(buffer);
 		}
+
+		env->ReleaseStringUTFChars(jfilePath, filePath);
+		env->ReleaseStringUTFChars(jattrName, attrName);
+
 		return jvalue;
 	}
 
@@ -104,6 +112,10 @@ using namespace std;
 		//  int removexattr(const char *path, const char *name, int options);
 
 		int ret = removexattr(filePath, attrName, XATTR_NOFOLLOW);
+
+		env->ReleaseStringUTFChars(jfilePath, filePath);
+		env->ReleaseStringUTFChars(jattrName, attrName);
+
 
 		return (ret == 0) ? JNI_TRUE : JNI_FALSE;
 	}
@@ -163,6 +175,7 @@ using namespace std;
 					bp = bp + attributeNames[i]+sizeof(char); // +1 skip Null byte
 		}
 
+		env->ReleaseStringUTFChars(jfilePath, filePath);
 		free(buffer);
 
 		return stringArray;
