@@ -127,7 +127,7 @@ using namespace std;
 	  (JNIEnv *env, jobject jobj, jstring jfilePath){
 
 		vector<int> attributeNames;
-		char *buffer;
+		char *buffer = NULL;
 
 
 		const char *filePath= env->GetStringUTFChars(jfilePath, 0);
