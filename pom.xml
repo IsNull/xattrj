@@ -51,6 +51,7 @@
 
 	<profiles>
 		<profile>
+            <id>default</id>
 		    <activation>
 		      <os>
 		        <family>unix</family>
@@ -72,13 +73,6 @@
 									name="jni"
 									description="Generate headers and compile the native code">
 									<echo>Generating JNI headers</echo>
-									<!-- Does not work with OpenJDK, because Ant javah assumes Sun JVM
-									<javah
-										destdir="${project.basedir}/src/main/c++"
-										classpath="${project.build.outputDirectory}">
-										<class name="ie.agisoft.Test"/>
-									</javah>
-									-->
 									<!-- -->
 									<exec executable="javah" >
 										<arg value="-d" />
@@ -102,7 +96,8 @@
 
 			<pluginManagement>
 				<plugins>
-					<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+					<!-- This plugin's configuration is used to store Eclipse m2e settings only.
+					 It has no influence on the Maven build itself. -->
 					<plugin>
 						<groupId>org.eclipse.m2e</groupId>
 						<artifactId>lifecycle-mapping</artifactId>
