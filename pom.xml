@@ -104,7 +104,7 @@
 										<arg value="-classpath" />
 										<arg value="${project.build.outputDirectory}" />
 										<arg value="-force" />
-										<arg value="org.securityvision.xattrj.Xattrj" />
+										<arg value="ch.securityvision.xattrj.Xattrj" />
 									</exec>
 									
 									<exec executable="make"></exec>
