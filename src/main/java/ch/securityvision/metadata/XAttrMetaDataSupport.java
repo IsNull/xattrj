@@ -1,6 +1,6 @@
-package org.securityvision.metadata;
+package ch.securityvision.metadata;
 
-import org.securityvision.xattrj.Xattrj;
+import ch.securityvision.xattrj.Xattrj;
 
 import java.io.File;
 import java.io.IOException;

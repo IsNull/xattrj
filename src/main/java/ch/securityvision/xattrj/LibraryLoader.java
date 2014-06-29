@@ -1,4 +1,4 @@
-package org.securityvision.xattrj;
+package ch.securityvision.xattrj;
 
 import java.io.File;
 import java.io.FileOutputStream;

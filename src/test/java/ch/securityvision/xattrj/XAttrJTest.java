@@ -1,4 +1,4 @@
-package org.securityvision.xattrj;
+package ch.securityvision.xattrj;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,9 +11,9 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.securityvision.metadata.FileMetaDataSupportFactory;
-import org.securityvision.metadata.IFileMetaDataSupport;
-import org.securityvision.metadata.MetaDataNotSupportedException;
+import ch.securityvision.metadata.FileMetaDataSupportFactory;
+import ch.securityvision.metadata.IFileMetaDataSupport;
+import ch.securityvision.metadata.MetaDataNotSupportedException;
 
 /**
  * Unit test for simple xAttrJ

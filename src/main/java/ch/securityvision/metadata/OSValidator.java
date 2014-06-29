@@ -1,4 +1,4 @@
-package org.securityvision.metadata; 
+package ch.securityvision.metadata;
 
 
 /**

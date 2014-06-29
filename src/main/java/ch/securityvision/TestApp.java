@@ -1,9 +1,10 @@
-package org.securityvision;
+package ch.securityvision;
+
+import ch.securityvision.xattrj.Xattrj;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.securityvision.xattrj.Xattrj;
 
 /**
  * Xattrj test!
