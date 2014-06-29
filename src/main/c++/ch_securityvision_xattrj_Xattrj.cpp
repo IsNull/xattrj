@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-#include "org_securityvision_xattrj_Xattrj.h"
+#include "ch_securityvision_xattrj_Xattrj.h"
 #include <sys/xattr.h>
 
 using namespace std;
@@ -18,7 +18,7 @@ using namespace std;
 	 * writes the extended attribute
 	 *
 	 */
-	JNIEXPORT jboolean JNICALL Java_org_securityvision_xattrj_Xattrj_writeAttribute
+	JNIEXPORT jboolean JNICALL Java_ch_securityvision_xattrj_Xattrj_writeAttribute
 		(JNIEnv *env, jobject jobj, jstring jfilePath, jstring jattrName, jstring jattrValue){
 
 		const char *filePath= env->GetStringUTFChars(jfilePath, 0);
@@ -49,7 +49,7 @@ using namespace std;
 	 *
 	 *
 	 */
-	JNIEXPORT jstring JNICALL Java_org_securityvision_xattrj_Xattrj_readAttribute
+	JNIEXPORT jstring JNICALL Java_ch_securityvision_xattrj_Xattrj_readAttribute
 		(JNIEnv *env, jobject jobj, jstring jfilePath, jstring jattrName){
 
 		jstring jvalue = NULL;
@@ -101,7 +101,7 @@ using namespace std;
 	/*
 	 * Remove the given attribute
 	 */
-	JNIEXPORT jboolean JNICALL Java_org_securityvision_xattrj_Xattrj_removeAttribute
+	JNIEXPORT jboolean JNICALL Java_ch_securityvision_xattrj_Xattrj_removeAttribute
 	  (JNIEnv *env, jobject jobj, jstring jfilePath, jstring jattrName){
 
 		const char *filePath= env->GetStringUTFChars(jfilePath, 0);
@@ -121,7 +121,7 @@ using namespace std;
 	/*
 	 * List all attributes
 	 */
-	JNIEXPORT jobjectArray JNICALL Java_org_securityvision_xattrj_Xattrj_listAttributes
+	JNIEXPORT jobjectArray JNICALL Java_ch_securityvision_xattrj_Xattrj_listAttributes
 	  (JNIEnv *env, jobject jobj, jstring jfilePath){
 
 		vector<int> attributeNames;
@@ -186,7 +186,7 @@ using namespace std;
 	/**
 	 * JNI Test Method
 	 */
-	JNIEXPORT void JNICALL Java_org_securityvision_xattrj_Xattrj_hello(JNIEnv *, jobject) {
+	JNIEXPORT void JNICALL Java_ch_securityvision_xattrj_Xattrj_hello(JNIEnv *, jobject) {
 		printf("Hello World From JNI-C++\n");
 
 	#ifdef __cplusplus
