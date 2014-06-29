@@ -4,11 +4,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.securityvision</groupId>
+	<groupId>ch.securityvision</groupId>
 	<artifactId>xattrj</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1</version>
+	<version>1.2</version>
 	<name>xattrj</name>
+    <description>Provides native extended attribute access for Java.</description>
 	<url>http://securityvision.ch</url>
 	
 	<licenses>
@@ -18,6 +19,20 @@
 	      <distribution>repo</distribution>
 	    </license>
   	</licenses>
+
+    <scm>
+        <url>https://github.com/IsNull/xattrj</url>
+        <connection>https://github.com/IsNull/xattrj.git</connection>
+    </scm>
+
+    <!-- Deployment info  -->
+    <distributionManagement>
+        <repository>
+            <id>securityvision-repository</id>
+            <url>sftp://securityvision.ch//var/www/vhosts/lvps83-169-20-121.dedicated.hosteurope.de/dl.securityvision.ch/maven</url>
+            <!-- Credentials are specified in private /.m2/settings.xml  -->
+        </repository>
+    </distributionManagement>
 	
 	<build>
 	    <plugins>
@@ -30,6 +45,15 @@
 	        </configuration>
 	      </plugin>
 	    </plugins>
+
+        <extensions>
+            <!-- Enabling the use of SSH / SFTP -->
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.6</version>
+            </extension>
+        </extensions>
 	</build>
 	
 	
