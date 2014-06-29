@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -18,7 +19,7 @@ import java.util.Map;
  * @author IsNull
  *
  */
-public class DefaultMetaDataSupport implements IFileMetaDataSupport {
+class DefaultMetaDataSupport implements IFileMetaDataSupport {
 
     /***************************************************************************
      *                                                                         *
@@ -38,22 +39,24 @@ public class DefaultMetaDataSupport implements IFileMetaDataSupport {
 
     /**{@inheritDoc}*/
 	@Override
-	public void writeAttribute(File file, String attrKey, String attrValue) {
+	public void writeAttribute(File file, String attrKey, String attrValue) throws MetadataIOException{
 		UserDefinedFileAttributeView view = Files
 				.getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
 		try {
 			view.write(attrKey,
 					Charset.defaultCharset().encode(attrValue));
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new MetadataIOException(
+                    String.format("Writing attribute '%s' with value '%s' to file '%s' failed.", attrKey, attrValue, file),
+                    e);
 		}
 	}
 
     /**{@inheritDoc}*/
 	@Override
-	public String readAttribute(File file, String attrKey) {
+	public String readAttribute(File file, String attrKey) throws MetadataIOException{
 		UserDefinedFileAttributeView view = Files
-				.getFileAttributeView(file.toPath(),UserDefinedFileAttributeView.class);
+				.getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
 		ByteBuffer buf;
 		try {
 			buf = ByteBuffer.allocate(view.size(attrKey));
@@ -63,12 +66,49 @@ public class DefaultMetaDataSupport implements IFileMetaDataSupport {
 		} catch (NoSuchFileException e) {
 			// the requested attribute could not be found
 		} catch (IOException e) {
-			e.printStackTrace();
+            throw new MetadataIOException(
+                    String.format("Reading attribute '%s' from file '%s' failed.", attrKey, file),
+                    e);
 		}
 		return null;
 	}
 
+
     /**{@inheritDoc}*/
+    @Override
+    public void removeAttribute(File file, String attrKey) throws MetadataIOException {
+        UserDefinedFileAttributeView view = Files
+                .getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
+
+        try {
+            view.delete(attrKey);
+        } catch (IOException e) {
+            throw new MetadataIOException(
+                    String.format("Deleting attribute '%s' from file '%s' failed.", attrKey, file),
+                    e);
+        }
+    }
+
+    /**{@inheritDoc}*/
+    @Override
+    public List<String> listAttributes(File file) throws MetadataIOException {
+        UserDefinedFileAttributeView view = Files
+                .getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
+
+        try {
+            List<String> attributes = view.list();
+            return attributes;
+        } catch (IOException e) {
+            throw new MetadataIOException(
+                    String.format("Listing attributes for file '%s' failed.", file),
+                    e);
+        }
+    }
+
+
+    /**
+	 * Is meta-data supported for the given file?
+	 */
 	@Override
 	public boolean isMetaDataSupported(File file) {
 		if(isWindows)
@@ -77,6 +117,7 @@ public class DefaultMetaDataSupport implements IFileMetaDataSupport {
 		}
 		return isMetaDataSupportedFor(file);
 	}
+
 
     /***************************************************************************
      *                                                                         *
@@ -98,7 +139,7 @@ public class DefaultMetaDataSupport implements IFileMetaDataSupport {
 	 * @param file
 	 * @return
 	 */
-	private boolean isMetaDataSupportedWindows(File file){
+	private boolean isMetaDataSupportedWindows(File file) {
 		String letter = file.toString().substring(0, 2);
 		Boolean metaDataSupported = driveMetaDataSupport.get(letter);
 		if(metaDataSupported == null){

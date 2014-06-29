@@ -1,4 +1,4 @@
-package org.securityvision.util;
+package org.securityvision.xattrj;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,7 +11,7 @@ import java.io.OutputStream;
  *
  * @author gkubisa
  */
-public class LibraryLoader {
+class LibraryLoader {
 
 	/**
 	 * Loads a native shared library. It tries the standard System.loadLibrary
