@@ -13,4 +13,4 @@
 *.log
 
 #IntelliJ 
-.idea
+/.idea
