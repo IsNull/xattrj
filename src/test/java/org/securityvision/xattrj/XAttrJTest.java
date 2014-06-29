@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.securityvision.metadata.FileMetaDataSupportFactory;
+import org.securityvision.metadata.IFileMetaDataSupport;
+import org.securityvision.metadata.MetaDataNotSupportedException;
 
 /**
  * Unit test for simple xAttrJ
@@ -48,7 +52,7 @@ public class XAttrJTest extends TestCase
 		String attNameString = "junit.test";
 		String value1 = "abcdefghijklmnopqrstuvwxyz";
 
-		Xattrj xattrj = getXattrj();
+        IFileMetaDataSupport xattrj = getMetaDataSupport();
 		assertNotNull(xattrj);
 		File file;
 		try {
@@ -77,7 +81,7 @@ public class XAttrJTest extends TestCase
 		String attNameString = "junit.test.remove";
 		String value1 = "qiojwefpo12341234ijaoispjf";
 
-		Xattrj xattrj = getXattrj();
+        IFileMetaDataSupport xattrj = getMetaDataSupport();
 		assertNotNull(xattrj);
 		File file;
 		try {
@@ -92,7 +96,8 @@ public class XAttrJTest extends TestCase
 
 			System.out.println("now deleting attribute: " + attNameString);
 
-			assertTrue("attribute could not be deleted (removeAttribute returned false!)", xattrj.removeAttribute(file, attNameString));
+            xattrj.removeAttribute(file, attNameString);
+			assertTrue("attribute could not be deleted (removeAttribute returned false!)", true);
 
 		} catch (IOException e) {
 			assertTrue(e.getMessage(), false);
@@ -115,7 +120,7 @@ public class XAttrJTest extends TestCase
 
 		String value1 = "abcdefghijklmnopqrstuvwxyz";
 
-		Xattrj xattrj = getXattrj();
+        IFileMetaDataSupport xattrj = getMetaDataSupport();
 		assertNotNull(xattrj);
 		File file;
 		try {
@@ -129,31 +134,31 @@ public class XAttrJTest extends TestCase
 
 			// we expect now that we get a list of all added attributes
 
-			String[] foundAttributes = xattrj.listAttributes(file);
+			List<String> foundAttributes = xattrj.listAttributes(file);
 
-			if(foundAttributes.length != attNameStrings.size()) 
+			if(foundAttributes.size() != attNameStrings.size())
 				System.err.println(
 						String.format("returned attr list %d is not same size as expected: %d ",
-								foundAttributes.length, attNameStrings.size()));
+								foundAttributes.size(), attNameStrings.size()));
 
 
 			assertTrue(
 					String.format("foundAttributes.length %d and attNameStrings.length %d are not Equal!", 
-							foundAttributes.length, attNameStrings.size()),
-							foundAttributes.length == attNameStrings.size());
+							foundAttributes.size(), attNameStrings.size()),
+							foundAttributes.size() == attNameStrings.size());
 
 
 			System.out.println("\n\nAll found attributes:");
-			for (int i = 0; i < foundAttributes.length; i++) {
-				System.out.println("'" + foundAttributes[i]+"'");
+			for (int i = 0; i < foundAttributes.size(); i++) {
+				System.out.println("'" + foundAttributes.get(i)+"'");
 			}
 			System.out.println();
 
 
-			for (int i = 0; i < foundAttributes.length; i++) {
+			for (String attrKey : foundAttributes) {
 				assertTrue(
-						String.format("missing attribute %s in set!", foundAttributes[i]),
-						attNameStrings.contains(foundAttributes[i]));
+						String.format("missing attribute %s in set!", attrKey),
+						attNameStrings.contains(attrKey));
 			}
 
 		} catch (IOException e) {
@@ -172,7 +177,7 @@ public class XAttrJTest extends TestCase
 		String attNameString = "junit.test";
 		String value2 = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
 
-		Xattrj xattrj = getXattrj();
+        IFileMetaDataSupport xattrj = getMetaDataSupport();
 		assertNotNull(xattrj);
 		File file;
 		try {
@@ -204,7 +209,7 @@ public class XAttrJTest extends TestCase
 			file = File.createTempFile("xattrTest", "junit");
 			file.deleteOnExit();
 
-			Xattrj xattrj = getXattrj();
+            IFileMetaDataSupport xattrj = getMetaDataSupport();
 			assertNotNull(xattrj);
 
 			String readed = xattrj.readAttribute(file, attNameString);
@@ -217,15 +222,13 @@ public class XAttrJTest extends TestCase
 	}
 
 
-	private Xattrj getXattrj(){
+	private IFileMetaDataSupport getMetaDataSupport(){
 		try {
-			return new Xattrj();
-		} catch (UnsatisfiedLinkError e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+			return FileMetaDataSupportFactory.buildFileMetaSupport();
+		} catch (MetaDataNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
 
 

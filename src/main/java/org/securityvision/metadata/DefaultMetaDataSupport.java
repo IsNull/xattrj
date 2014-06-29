@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -20,23 +21,29 @@ import java.util.Map;
  */
 class DefaultMetaDataSupport implements IFileMetaDataSupport {
 
+    private final boolean isWindows = OSValidator.isWindows();
+    private final Map<String, Boolean> driveMetaDataSupport = new HashMap<String, Boolean>();
+
+
 
 	@Override
-	public void writeAttribute(File file, String attrKey, String attrValue) {
+	public void writeAttribute(File file, String attrKey, String attrValue) throws MetadataIOException{
 		UserDefinedFileAttributeView view = Files
 				.getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
 		try {
 			view.write(attrKey,
 					Charset.defaultCharset().encode(attrValue));
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new MetadataIOException(
+                    String.format("Writing attribute '%s' with value '%s' to file '%s' failed.", attrKey, attrValue, file),
+                    e);
 		}
 	}
 
 	@Override
-	public String readAttribute(File file, String attrKey) {
+	public String readAttribute(File file, String attrKey) throws MetadataIOException{
 		UserDefinedFileAttributeView view = Files
-				.getFileAttributeView(file.toPath(),UserDefinedFileAttributeView.class);
+				.getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
 		ByteBuffer buf;
 		try {
 			buf = ByteBuffer.allocate(view.size(attrKey));
@@ -46,13 +53,44 @@ class DefaultMetaDataSupport implements IFileMetaDataSupport {
 		} catch (NoSuchFileException e) {
 			// the requested attribute could not be found
 		} catch (IOException e) {
-			e.printStackTrace();
+            throw new MetadataIOException(
+                    String.format("Reading attribute '%s' from file '%s' failed.", attrKey, file),
+                    e);
 		}
 		return null;
 	}
 
-	private final boolean isWindows = OSValidator.isWindows();
-	/**
+    @Override
+    public void removeAttribute(File file, String attrKey) throws MetadataIOException {
+        UserDefinedFileAttributeView view = Files
+                .getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
+
+        try {
+            view.delete(attrKey);
+        } catch (IOException e) {
+            throw new MetadataIOException(
+                    String.format("Deleting attribute '%s' from file '%s' failed.", attrKey, file),
+                    e);
+        }
+    }
+
+    @Override
+    public List<String> listAttributes(File file) throws MetadataIOException {
+        UserDefinedFileAttributeView view = Files
+                .getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
+
+        try {
+            List<String> attributes = view.list();
+            return attributes;
+        } catch (IOException e) {
+            throw new MetadataIOException(
+                    String.format("Listing attributes for file '%s' failed.", file),
+                    e);
+        }
+    }
+
+
+    /**
 	 * Is meta-data supported for the given file?
 	 */
 	@Override
@@ -63,9 +101,6 @@ class DefaultMetaDataSupport implements IFileMetaDataSupport {
 		}
 		return isMetaDataSupportedFor(file);
 	}
-
-	private final Map<String, Boolean> driveMetaDataSupport = new HashMap<String, Boolean>();
-
 
 	/**
 	 * Does the given file support metadata?
@@ -80,7 +115,7 @@ class DefaultMetaDataSupport implements IFileMetaDataSupport {
 	 * @param file
 	 * @return
 	 */
-	private boolean isMetaDataSupportedWindows(File file){
+	private boolean isMetaDataSupportedWindows(File file) {
 		String letter = file.toString().substring(0, 2);
 		Boolean metaDataSupported = driveMetaDataSupport.get(letter);
 		if(metaDataSupported == null){
