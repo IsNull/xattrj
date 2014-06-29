@@ -18,9 +18,9 @@ JNIEXPORT void JNICALL Java_org_securityvision_xattrj_Xattrj_hello
 /*
  * Class:     org_securityvision_xattrj_Xattrj
  * Method:    writeAttribute
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z
  */
-JNIEXPORT void JNICALL Java_org_securityvision_xattrj_Xattrj_writeAttribute
+JNIEXPORT jboolean JNICALL Java_org_securityvision_xattrj_Xattrj_writeAttribute
   (JNIEnv *, jobject, jstring, jstring, jstring);
 
 /*

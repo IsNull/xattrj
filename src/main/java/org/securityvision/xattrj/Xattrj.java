@@ -33,8 +33,8 @@ public class Xattrj {
      * @param attrKey
      * @param attrValue
      */
-    public void writeAttribute(File file, String attrKey, String attrValue){
-        writeAttribute(file.getAbsolutePath(), attrKey, attrValue);
+    public boolean writeAttribute(File file, String attrKey, String attrValue){
+        return writeAttribute(file.getAbsolutePath(), attrKey, attrValue);
     }
 
     /**
@@ -83,7 +83,7 @@ public class Xattrj {
      * @param attrKey
      * @param attrValue
      */
-    private native void writeAttribute(String file, String attrKey, String attrValue);
+    private native boolean writeAttribute(String file, String attrKey, String attrValue);
 
     /**
      * Read the extended attribute from the given file

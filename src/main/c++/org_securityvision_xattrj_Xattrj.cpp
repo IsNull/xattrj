@@ -18,7 +18,7 @@ using namespace std;
 	 * writes the extended attribute
 	 *
 	 */
-	JNIEXPORT void JNICALL Java_org_securityvision_xattrj_Xattrj_writeAttribute
+	JNIEXPORT jboolean JNICALL Java_org_securityvision_xattrj_Xattrj_writeAttribute
 		(JNIEnv *env, jobject jobj, jstring jfilePath, jstring jattrName, jstring jattrValue){
 
 		const char *filePath= env->GetStringUTFChars(jfilePath, 0);
@@ -28,17 +28,15 @@ using namespace std;
 		int res = setxattr(filePath,
 					attrName,
 		            (void *)attrValue,
-		            strlen(attrValue), 0,  0); //XATTR_NOFOLLOW != 0
-		if(res){
-		  // an error occurred, see errno
-			printf("native:writeAttribute: error on write...");
-			perror("");
-		}
+		            strlen(attrValue),
+		            0,
+		            XATTR_NOFOLLOW);
 
 		env->ReleaseStringUTFChars(jfilePath, filePath);
 		env->ReleaseStringUTFChars(jattrName, attrName);
 		env->ReleaseStringUTFChars(jattrValue, attrValue);
 
+        return (res == 0) ? JNI_TRUE : JNI_FALSE;
 	}
 
 
@@ -60,14 +58,14 @@ using namespace std;
 		const char *attrName= env->GetStringUTFChars(jattrName, 0);
 
 		// get size of needed buffer
-		int bufferLength = getxattr(filePath, attrName, NULL, 0, 0, 0);
+		int bufferLength = getxattr(filePath, attrName, NULL, 0, 0, XATTR_NOFOLLOW);
 
 		if(bufferLength > 0){
 			// make a buffer of sufficient length
 			char *buffer = (char*)malloc(bufferLength);
 
 			// now actually get the attribute string
-			int s = getxattr(filePath, attrName, buffer, bufferLength, 0, 0);
+			int s = getxattr(filePath, attrName, buffer, bufferLength, 0, XATTR_NOFOLLOW);
 
 			if(s > 0){
 				// convert the buffer to java string
