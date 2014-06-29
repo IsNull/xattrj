@@ -3,8 +3,6 @@ package org.securityvision.xattrj;
 import java.io.File;
 import java.io.IOException;
 
-import org.securityvision.util.LibraryLoader;
-
 /**
  * Xattrj
  * Provides native extended attribute access for Java!

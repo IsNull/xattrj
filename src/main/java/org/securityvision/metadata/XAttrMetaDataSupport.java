@@ -12,15 +12,9 @@ import org.securityvision.xattrj.Xattrj;
  * @author IsNull
  *
  */
-public class XAttrMetaDataSupport implements IFileMetaDataSupport {
+class XAttrMetaDataSupport implements IFileMetaDataSupport {
 
 	private Xattrj xattrj;
-
-
-	public static void main(String[] args) {
-		new TestApp().test();
-	}
-
 
 	private static IFileMetaDataSupport instance;
 

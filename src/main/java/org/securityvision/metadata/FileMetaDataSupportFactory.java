@@ -1,10 +1,13 @@
 package org.securityvision.metadata;
 
-
+/**
+ * Factory which creates a IFileMetaDataSupport instance.
+ * The instance is valid for the current running platform and will internally be cached.
+ *
+ */
 public class FileMetaDataSupportFactory {
 
 	private FileMetaDataSupportFactory(){}
-
 	private static IFileMetaDataSupport fileMetaDataSupport = null;
 
 
@@ -13,7 +16,7 @@ public class FileMetaDataSupportFactory {
 	 * @return
 	 * @throws MetaDataNotSupportedException 
 	 */
-	public static IFileMetaDataSupport buildFileMetaSupport() throws MetaDataNotSupportedException{
+	public synchronized static IFileMetaDataSupport buildFileMetaSupport() throws MetaDataNotSupportedException{
 		if(fileMetaDataSupport == null)
 		{
 			if(OSValidator.isOSX())

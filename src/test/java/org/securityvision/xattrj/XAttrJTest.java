@@ -14,8 +14,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for simple xAttrJ
  */
-public class XAttrJTest 
-extends TestCase
+public class XAttrJTest extends TestCase
 {
 	/**
 	 * Create the test case

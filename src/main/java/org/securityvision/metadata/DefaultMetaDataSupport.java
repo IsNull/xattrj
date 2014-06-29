@@ -18,7 +18,7 @@ import java.util.Map;
  * @author IsNull
  *
  */
-public class DefaultMetaDataSupport implements IFileMetaDataSupport {
+class DefaultMetaDataSupport implements IFileMetaDataSupport {
 
 
 	@Override
