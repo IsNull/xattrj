@@ -43,7 +43,6 @@ public class XAttrJTest extends TestCase
 	 */
 	public void testStringAttribute()
 	{
-
 		String attNameString = "junit.test";
 		String value1 = "abcdefghijklmnopqrstuvwxyz";
 
