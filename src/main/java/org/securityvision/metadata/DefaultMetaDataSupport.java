@@ -20,7 +20,23 @@ import java.util.Map;
  */
 public class DefaultMetaDataSupport implements IFileMetaDataSupport {
 
+    /***************************************************************************
+     *                                                                         *
+     * Private Fields                                                          *
+     *                                                                         *
+     **************************************************************************/
 
+    private final boolean isWindows = OSValidator.isWindows();
+    private final Map<String, Boolean> driveMetaDataSupport = new HashMap<String, Boolean>();
+
+
+    /***************************************************************************
+     *                                                                         *
+     * Public API                                                              *
+     *                                                                         *
+     **************************************************************************/
+
+    /**{@inheritDoc}*/
 	@Override
 	public void writeAttribute(File file, String attrKey, String attrValue) {
 		UserDefinedFileAttributeView view = Files
@@ -33,6 +49,7 @@ public class DefaultMetaDataSupport implements IFileMetaDataSupport {
 		}
 	}
 
+    /**{@inheritDoc}*/
 	@Override
 	public String readAttribute(File file, String attrKey) {
 		UserDefinedFileAttributeView view = Files
@@ -51,10 +68,7 @@ public class DefaultMetaDataSupport implements IFileMetaDataSupport {
 		return null;
 	}
 
-	private final boolean isWindows = OSValidator.isWindows();
-	/**
-	 * Is meta-data supported for the given file?
-	 */
+    /**{@inheritDoc}*/
 	@Override
 	public boolean isMetaDataSupported(File file) {
 		if(isWindows)
@@ -64,7 +78,11 @@ public class DefaultMetaDataSupport implements IFileMetaDataSupport {
 		return isMetaDataSupportedFor(file);
 	}
 
-	private final Map<String, Boolean> driveMetaDataSupport = new HashMap<String, Boolean>();
+    /***************************************************************************
+     *                                                                         *
+     * Private methods                                                         *
+     *                                                                         *
+     **************************************************************************/
 
 
 	/**

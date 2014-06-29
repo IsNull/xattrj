@@ -1,9 +1,9 @@
 package org.securityvision.xattrj;
 
+import org.securityvision.util.LibraryLoader;
+
 import java.io.File;
 import java.io.IOException;
-
-import org.securityvision.util.LibraryLoader;
 
 /**
  * Xattrj
@@ -28,13 +28,6 @@ public class Xattrj {
 		libLoaded = true;
 		System.out.println("loaded!");
 	}
-
-
-	/**
-	 * JNI Test Method
-	 */
-	public native void hello();
-
 
 	/**
 	 * Write the extended attribute to the given file
@@ -80,6 +73,11 @@ public class Xattrj {
 	//
 	// NATIVE METHOD ENTRY POINTS
 	//
+
+    /**
+     * JNI Test Method
+     */
+    public native void hello();
 
 	/**
 	 * Write the extended attribute to the given file

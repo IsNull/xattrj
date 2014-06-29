@@ -11,14 +11,14 @@ import java.io.File;
 public interface IFileMetaDataSupport {
 
 	/**
-	 * Checks if meta data is supported
+	 * Checks if meta data is supported for the given file.
 	 * @param file
 	 * @return
 	 */
 	public abstract boolean isMetaDataSupported(File file);
 
 	/**
-	 * Write the extended attribute to the given file
+	 * Write the extended attribute to the given file.
 	 * @param file
 	 * @param attrKey
 	 * @param attrValue
@@ -26,7 +26,7 @@ public interface IFileMetaDataSupport {
 	public abstract void writeAttribute(File file, String attrKey, String attrValue);
 
 	/**
-	 * Read the extended attribute from the given file
+	 * Read the extended attribute from the given file.
 	 * @param file
 	 * @param attrKey
 	 * @return

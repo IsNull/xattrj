@@ -1,10 +1,9 @@
 package org.securityvision.metadata;
 
+import org.securityvision.xattrj.Xattrj;
+
 import java.io.File;
 import java.io.IOException;
-
-import org.securityvision.TestApp;
-import org.securityvision.xattrj.Xattrj;
 
 /**
  * OS X implementation for xattr using native C API
@@ -14,15 +13,20 @@ import org.securityvision.xattrj.Xattrj;
  */
 public class XAttrMetaDataSupport implements IFileMetaDataSupport {
 
+    /***************************************************************************
+     *                                                                         *
+     * Private Fields                                                          *
+     *                                                                         *
+     **************************************************************************/
+
 	private Xattrj xattrj;
-
-
-	public static void main(String[] args) {
-		new TestApp().test();
-	}
-
-
 	private static IFileMetaDataSupport instance;
+
+    /***************************************************************************
+     *                                                                         *
+     * Singleton                                                               *
+     *                                                                         *
+     **************************************************************************/
 
 	/**
 	 * Get the platform specific XAttr implementation
@@ -40,14 +44,23 @@ public class XAttrMetaDataSupport implements IFileMetaDataSupport {
 		return instance;
 	}
 
-
-
-	XAttrMetaDataSupport() throws UnsatisfiedLinkError, IOException{
+    /**
+     * Private Singleton constructor
+     * @throws UnsatisfiedLinkError
+     * @throws IOException
+     */
+	private XAttrMetaDataSupport() throws UnsatisfiedLinkError, IOException{
 		xattrj = new Xattrj();
 		System.out.println("started xattrj.");
 	}
 
+    /***************************************************************************
+     *                                                                         *
+     * Public API                                                              *
+     *                                                                         *
+     **************************************************************************/
 
+    /**{@inheritDoc}*/
 	@Override
 	public boolean isMetaDataSupported(File file) {
 		// xattr emulates the attributes with the "._" Prefix
@@ -56,7 +69,7 @@ public class XAttrMetaDataSupport implements IFileMetaDataSupport {
 	}
 
 	/**
-	 * writeAttribute
+     * {@inheritDoc}
 	 * xattr -w [-rsx] attr_name attr_value file ...
 	 * 
 	 */
@@ -66,7 +79,7 @@ public class XAttrMetaDataSupport implements IFileMetaDataSupport {
 	}
 
 	/**
-	 * readAttribute
+     * {@inheritDoc}
 	 * xattr -p [-lrsvx] attr_name file ...
 	 * 
 	 */
