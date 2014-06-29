@@ -43,11 +43,6 @@ public class XAttrJTest extends TestCase
 	 */
 	public void testStringAttribute()
 	{
-		if(skipTests()){
-			Assert.assertTrue(true);
-			return;
-		}
-
 
 		String attNameString = "junit.test";
 		String value1 = "abcdefghijklmnopqrstuvwxyz";
@@ -72,11 +67,6 @@ public class XAttrJTest extends TestCase
 	}
 
 	public void testRemoveAttribute(){
-		if(skipTests()){
-			Assert.assertTrue(true);
-			return;
-		}
-
 
 		String attNameString = "junit.test.remove";
 		String value1 = "qiojwefpo12341234ijaoispjf";
@@ -109,12 +99,6 @@ public class XAttrJTest extends TestCase
 
 	public void testListAttributes()
 	{
-		if(skipTests()){
-			Assert.assertTrue(true);
-			return;
-		}
-
-
 		String[] _attNameStrings = { "junit.test", "blub", "blabbb2", "hello", "world" };
 		Set<String> attNameStrings = new HashSet<String>(Arrays.asList(_attNameStrings));
 
@@ -169,11 +153,6 @@ public class XAttrJTest extends TestCase
 
 	public void testLargeStringAttribute()
 	{
-		if(skipTests()){
-			Assert.assertTrue(true);
-			return;
-		}
-
 		String attNameString = "junit.test";
 		String value2 = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
 
@@ -197,10 +176,6 @@ public class XAttrJTest extends TestCase
 
 	public void testMissingAttribute()
 	{
-		if(skipTests()){
-			Assert.assertTrue(true);
-			return;
-		}
 
 		String attNameString = "junit.IdoNotExist";
 
@@ -229,19 +204,5 @@ public class XAttrJTest extends TestCase
             e.printStackTrace();
         }
         return null;
-	}
-
-
-	/**
-	 * Shall the tests be skipped (not supported on the current platform)
-	 * 
-	 * @return
-	 */
-	private static boolean skipTests() {
-		// Is the current OS a windows? If so, skipp tests.
-
-		String os = System.getProperty("os.name").toLowerCase();
-		// windows
-		return (os.indexOf("win") >= 0);
 	}
 }
