@@ -22,9 +22,9 @@ Then you can add a dependency to your maven project:
 
 ```
   		<dependency>
-	        <groupId>org.securityvision</groupId>
+	        <groupId>ch.securityvision</groupId>
 	        <artifactId>xattrj</artifactId>
-	        <version>1.0</version>
+	        <version>1.3</version>
 	    </dependency>
 ```
 
